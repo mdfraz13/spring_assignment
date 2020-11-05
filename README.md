@@ -9,4 +9,7 @@ To create Java application to search Handsets.
 #### Request 
 * curl --location --request GET 'http://localhost:8080/mobile/search?priceEur=200&announceDate=1999'
 
-### Response Body
+#### Response Body
+##### Error Body 
+
+##### Error Body  
