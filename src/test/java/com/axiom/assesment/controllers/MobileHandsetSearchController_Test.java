@@ -143,6 +143,20 @@ public class MobileHandsetSearchController_Test {
 	}
 
 	@Test
+	public void test_success_Invalid_PriceEur() throws Exception {
+
+		final String queryParams = "?priceEur=TEST";
+
+		given(mockMobileHandsetSearchService.getAllMobiles()).willReturn(mobileHandsetList);
+
+		this.mockMvc.perform(get(testServerEndPoint + "/mobile/search" + queryParams))
+					.andExpect(MockMvcResultMatchers.jsonPath("$.error").exists())
+					.andExpect(MockMvcResultMatchers.jsonPath("$.error.code").value("INVALID_PEUR"))
+					.andExpect(MockMvcResultMatchers.jsonPath("$.totalHandsetsFound").value(0))
+					.andReturn();
+	}
+
+	@Test
 	public void test_success_PriceEurAndAnnouceDate() throws Exception {
 
 		final String queryParams = "?priceEur=200&announceDate=1999";
@@ -171,7 +185,7 @@ public class MobileHandsetSearchController_Test {
 	@Test
 	public void test_success_phoneApple_withGPS__AnnouceDate_Price() throws Exception {
 
-		final String queryParams = "?brans=Apple&gps=A-GPS&priceEur=1250&announceDate=2018";
+		final String queryParams = "?brand=Apple&gps=A-GPS&priceEur=1250&announceDate=2018";
 
 		given(mockMobileHandsetSearchService.getAllMobiles()).willReturn(mobileHandsetList);
 
@@ -184,7 +198,20 @@ public class MobileHandsetSearchController_Test {
 	@Test
 	public void test_success_phoneApple_withBattery__AnnouceDate_Price() throws Exception {
 
-		final String queryParams = "?brans=Apple&battery=3174&priceEur=1250&announceDate=2018";
+		final String queryParams = "?brand=Apple&battery=3174&priceEur=1250&announceDate=2018";
+
+		given(mockMobileHandsetSearchService.getAllMobiles()).willReturn(mobileHandsetList);
+
+		this.mockMvc.perform(get(testServerEndPoint + "/mobile/search" + queryParams))
+					.andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
+					.andExpect(MockMvcResultMatchers.jsonPath("$.totalHandsetsFound").value(1))
+					.andReturn();
+	}
+
+	@Test
+	public void test_success_phoneApple_With_Space() throws Exception {
+
+		final String queryParams = "?phone=Apple iPhone XS Max";
 
 		given(mockMobileHandsetSearchService.getAllMobiles()).willReturn(mobileHandsetList);
 

@@ -42,7 +42,7 @@ public class MobileHandsetSearchController {
 		}
 
 		final List<MobileHandset> listMobile = searchService.getAllMobiles();
-		if (listMobile == null)
+		if (listMobile == null || listMobile.isEmpty())
 		{
 			log.error("found no data from service, not proceeding ");
 			return new SearchResp(new ErrResp("INVALID_DATA", "No records found from api"));

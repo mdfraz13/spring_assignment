@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,16 +24,16 @@ public class MobileHandsetSearchService {
 	@Autowired
 	private CacheManager cacheManager;
 
-	@Value("${mobile.handsets.list.url}")
+	@Value("${mobile.handsets.endpoint}")
 	private String mobileHandsetsUrl;
 
 	@Cacheable("allmobiles")
 	public List<MobileHandset> getAllMobiles()
 	{
 		log.info("calling the mobile handset api ");
-		MobileHandset[] mobileHandSets = restTemplate.getForObject(mobileHandsetsUrl, MobileHandset[].class);
+		final MobileHandset[] mobileHandSets = restTemplate.getForObject(mobileHandsetsUrl, MobileHandset[].class);
 
-		if (mobileHandSets != null) {
+		if (mobileHandSets != null && mobileHandSets.length > 0) {
 			log.info("recieved response from the mobile handset api, {} records", mobileHandSets.length);
 			return Arrays.asList(mobileHandSets);
 		}
@@ -43,8 +44,11 @@ public class MobileHandsetSearchService {
 
 	public void invalidateCache() {
 		log.info("invalidating the caches");
-		for (String name : cacheManager.getCacheNames()) {
-			cacheManager.getCache(name).invalidate();
+		for (final String name : cacheManager.getCacheNames()) {
+			final Cache cache = cacheManager.getCache(name);
+			if (cache != null) {
+				cache.invalidate();
+			}
 		}
 	}
 

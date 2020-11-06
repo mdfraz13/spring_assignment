@@ -78,7 +78,7 @@ public class SearchParamValidator {
 
 		if (params.containsKey("priceEur")) {
 			final String priceEur = params.get("priceEur");
-			if (isBlank(priceEur)) {
+			if (isBlank(priceEur) || !isNumeric(priceEur)) {
 				log.error("invalid priceEur params for headsets in request {}, not proceeding ", priceEur);
 				return new ErrResp("INVALID_PEUR", "Invalid priceEur in request param");
 			}
