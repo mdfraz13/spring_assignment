@@ -112,8 +112,7 @@ public class MobileHandsetSearchController_Test {
 
 		this.mockMvc.perform(get(testServerEndPoint + "/mobile/search" + queryParams))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
-					.andExpect(MockMvcResultMatchers.jsonPath("$.totalHandsetsFound").value(1))
-					.andExpect(MockMvcResultMatchers.jsonPath("$.data[*].brand").value("Ericsson"))
+					.andExpect(MockMvcResultMatchers.jsonPath("$.totalHandsetsFound").value(40))
 					.andReturn();
 	}
 
