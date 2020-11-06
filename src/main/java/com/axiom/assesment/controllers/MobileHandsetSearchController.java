@@ -38,7 +38,7 @@ public class MobileHandsetSearchController {
 		if (errResp != null)
 		{
 			log.error("found validation error {} for params {} ", errResp, params);
-			new SearchResp(errResp);
+			return new SearchResp(errResp);
 		}
 
 		final List<MobileHandset> listMobile = searchService.getAllMobiles();
@@ -70,6 +70,7 @@ public class MobileHandsetSearchController {
 
 	@DeleteMapping("/invalidate/cache")
 	public void invalidateCache() {
+		log.info("calling invalidate api.");
 		searchService.invalidateCache();
 	}
 
